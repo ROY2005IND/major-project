@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Cyber Forensic Tool</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modern-theme.css') }}">
+</head>
+<body>
+
+<nav class="topnav">
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="topnav-brand">
+            <span class="brand-icon">🔍</span>
+            Cyber Forensic Tool
+        </a>
+        <div style="display:flex; align-items:center; gap: 4px;">
+            <div class="topnav-links">
+                <a href="{{ url_for('dashboard') }}" class="topnav-link active">Dashboard</a>
+                <a href="{{ url_for('workspace') }}" class="topnav-link">New Investigation</a>
+            </div>
+            <div class="topnav-user">
+                <div class="avatar" id="avatarInitials">--</div>
+                <div class="topnav-user-info">
+                    <div class="topnav-user-name">{{ investigator }}</div>
+                    <div class="topnav-user-role">{% if is_admin %}Admin{% else %}Investigator{% endif %}</div>
+                </div>
+                <button class="btn btn-ghost" onclick="logout()" title="Log out">🚪</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="hero-banner dash-hero">
+        <div>
+            <h1>Welcome, {{ investigator.split(' ')[0] if investigator else 'Investigator' }} 👋</h1>
+            <p>Shared case workspace — any investigator can open, continue, or add custody events to any case.</p>
+        </div>
+        <a href="{{ url_for('workspace') }}" class="btn" style="background:#fff; color:var(--primary-dark); font-weight:800;">
+            🚀 Start New Investigation
+        </a>
+    </div>
+
+    <div class="stat-row" id="statRow">
+        <div class="stat-card"><div class="stat-value" id="statTotal">–</div><div class="stat-label">Total Cases</div></div>
+        <div class="stat-card"><div class="stat-value" id="statRegistered">–</div><div class="stat-label">On Blockchain</div></div>
+        <div class="stat-card"><div class="stat-value" id="statReported">–</div><div class="stat-label">Reports Generated</div></div>
+        <div class="stat-card"><div class="stat-value" id="statPending">–</div><div class="stat-label">Awaiting Next Step</div></div>
+    </div>
+
+    <section class="card">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom: 4px;">
+            <h2 style="border:none; padding:0; margin:0;"><span class="icon-chip chip-indigo">📁</span> Investigations</h2>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-secondary" id="tabMine" onclick="setScope('mine')">My Cases</button>
+                <button class="btn btn-ghost" id="tabAll" onclick="setScope('all')">All Investigators</button>
+            </div>
+        </div>
+        <p style="margin-top:10px;">Any investigator can open any case to continue an investigation or log a chain-of-custody event — this mirrors how evidence is actually handed between investigators.</p>
+        <input type="text" id="caseSearch" placeholder="🔍 Search by session ID or evidence hash..."
+               style="width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:8px; margin: 14px 0; font-family: inherit;"
+               oninput="renderCases()">
+        <div id="caseGrid" class="case-grid">
+            <div class="skeleton" style="height:120px;"></div>
+            <div class="skeleton" style="height:120px;"></div>
+            <div class="skeleton" style="height:120px;"></div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+const isAdmin = {{ is_admin | tojson }};
+
+function initials(name) {
+    if (!name) return '--';
+    const parts = name.trim().split(' ');
+    return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase();
+}
+document.getElementById('avatarInitials').textContent = initials('{{ investigator }}');
+
+async function logout() {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    window.location.href = '/login';
+}
+
+let allCases = [];
+let currentScope = 'mine';
+
+function statusBadge(status) {
+    const map = {
+        collected: ['badge-neutral', '📥 Collected'],
+        registered: ['badge-info', '⛓️ On-Chain'],
+        reported: ['badge-success', '✅ Reported'],
+    };
+    const [cls, label] = map[status] || ['badge-neutral', status];
+    return `<span class="badge ${cls}">${label}</span>`;
+}
+
+function setScope(scope) {
+    currentScope = scope;
+    document.getElementById('tabMine').className = scope === 'mine' ? 'btn btn-secondary' : 'btn btn-ghost';
+    document.getElementById('tabAll').className = scope === 'all' ? 'btn btn-secondary' : 'btn btn-ghost';
+    loadCases();
+}
+
+async function loadCases() {
+    try {
+        const res = await fetch(`/api/cases?scope=${currentScope}`);
+        const data = await res.json();
+        if (data.status !== 'success') return;
+
+        allCases = data.cases || [];
+
+        document.getElementById('statTotal').textContent = allCases.length;
+        document.getElementById('statRegistered').textContent = allCases.filter(c => c.blockchain_registered).length;
+        document.getElementById('statReported').textContent = allCases.filter(c => c.report_generated).length;
+        document.getElementById('statPending').textContent = allCases.filter(c => c.status !== 'reported').length;
+
+        renderCases();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function renderCases() {
+    const query = (document.getElementById('caseSearch').value || '').toLowerCase().trim();
+    const grid = document.getElementById('caseGrid');
+
+    const cases = allCases.filter(c =>
+        !query ||
+        (c.session_id || '').toLowerCase().includes(query) ||
+        (c.evidence_hash || '').toLowerCase().includes(query)
+    );
+
+    if (allCases.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+                <div class="empty-icon">🗂️</div>
+                <h3>${currentScope === 'mine' ? 'No investigations yet' : 'No investigations from anyone yet'}</h3>
+                <p>Start your first forensic investigation to see it here.</p>
+            </div>`;
+        return;
+    }
+
+    if (cases.length === 0) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;"><p>No cases match "${query}"</p></div>`;
+        return;
+    }
+
+    grid.innerHTML = cases.map((c, i) => `
+        <div class="case-card" style="animation-delay:${i * 0.05}s" onclick="openCase(${c.id})">
+            <div class="case-card-top">
+                <div>
+                    <strong>${c.session_id}</strong>
+                    <div class="case-card-id">Case #${c.id}</div>
+                </div>
+                ${statusBadge(c.status)}
+            </div>
+            <div class="case-card-meta">
+                <span>👤 Started by ${c.investigator || 'Unknown'}</span>
+                <span>🔬 ${(c.forensic_types || '').split(',').filter(Boolean).join(', ') || 'N/A'}</span>
+                <span>🕒 ${new Date(c.created_at).toLocaleString()}</span>
+                ${c.evidence_hash ? `<span class="case-card-hash">🔑 ${c.evidence_hash.substring(0,24)}...</span>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+async function openCase(caseId) {
+    await fetch(`/api/cases/${caseId}/activate`, { method: 'POST' });
+    window.location.href = '/workspace';
+}
+
+loadCases();
+</script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Forensic Tool — Blockchain-Secured Digital Investigations</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body class="lp-body">
+
+<nav class="lp-nav">
+    <div class="lp-container">
+        <a href="#home" class="lp-brand">
+            <span class="lp-brand-icon">🔍</span>
+            Cyber Forensic Tool
+        </a>
+        <div class="lp-nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+        </div>
+        <div class="lp-nav-cta">
+            <a href="{{ url_for('auth.login_page') }}" class="lp-btn lp-btn-outline lp-btn-sm">Sign In</a>
+            <a href="{{ url_for('auth.register_page') }}" class="lp-btn lp-btn-primary lp-btn-sm">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="lp-hero" id="home">
+    <div class="lp-bg-glow"></div>
+    <div class="lp-grid-lines"></div>
+    <div class="lp-container">
+        <div class="lp-hero-grid">
+            <div>
+                <div class="lp-eyebrow">⛓️ Blockchain-Verified · Tamper-Proof</div>
+                <h1>Digital Forensics with <span class="accent">Immutable</span> Chain of Custody</h1>
+                <p class="lead">
+                    Collect, hash, and permanently register digital evidence on the blockchain.
+                    Detect tampering instantly, collaborate across investigators, and generate
+                    court-ready AI reports — all in one platform.
+                </p>
+                <div class="lp-hero-actions">
+                    <a href="{{ url_for('auth.register_page') }}" class="lp-btn lp-btn-primary">
+                        🚀 Get Started Free
+                    </a>
+                    <a href="{{ url_for('auth.login_page') }}" class="lp-btn lp-btn-outline">
+                        Sign In →
+                    </a>
+                </div>
+                <div class="lp-hero-stats">
+                    <div><strong>SHA-256</strong><span>Evidence Hashing</span></div>
+                    <div><strong>On-Chain</strong><span>Custody Records</span></div>
+                    <div><strong>AI-Powered</strong><span>Forensic Reports</span></div>
+                </div>
+            </div>
+
+            <div class="lp-illustration-wrap">
+                <svg viewBox="0 0 600 520" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="screenGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#1b2350"/>
+                            <stop offset="100%" stop-color="#0d1330"/>
+                        </linearGradient>
+                        <linearGradient id="baseGrad" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#182150"/>
+                            <stop offset="100%" stop-color="#0f1638"/>
+                        </linearGradient>
+                        <linearGradient id="lockGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#2dd4bf"/>
+                            <stop offset="100%" stop-color="#3b82f6"/>
+                        </linearGradient>
+                        <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#3b82f6"/>
+                            <stop offset="100%" stop-color="#2dd4bf"/>
+                        </linearGradient>
+                        <linearGradient id="cubeTeal" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#5eead4"/>
+                            <stop offset="100%" stop-color="#0d9488"/>
+                        </linearGradient>
+                        <linearGradient id="cubeBlue" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#93c5fd"/>
+                            <stop offset="100%" stop-color="#2563eb"/>
+                        </linearGradient>
+                        <linearGradient id="cubePurple" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#c4b5fd"/>
+                            <stop offset="100%" stop-color="#7c3aed"/>
+                        </linearGradient>
+                        <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+                            <feGaussianBlur stdDeviation="8" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- ambient pulse rings -->
+                    <circle cx="330" cy="250" r="150" fill="none" stroke="#2dd4bf" stroke-width="1" opacity="0.25" class="lp-pulse-slow"/>
+                    <circle cx="330" cy="250" r="200" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.15" class="lp-pulse"/>
+
+                    <!-- circuit connector lines -->
+                    <path d="M90,140 L230,190" stroke="#2dd4bf" stroke-width="1.5" opacity="0.35" class="lp-flow" fill="none"/>
+                    <path d="M520,110 L420,170" stroke="#3b82f6" stroke-width="1.5" opacity="0.35" class="lp-flow" fill="none"/>
+                    <path d="M120,400 L240,340" stroke="#8b5cf6" stroke-width="1.5" opacity="0.35" class="lp-flow" fill="none"/>
+                    <path d="M520,360 L430,310" stroke="#2dd4bf" stroke-width="1.5" opacity="0.35" class="lp-flow" fill="none"/>
+
+                    <!-- floating binary digits -->
+                    <text x="60" y="230" fill="#2dd4bf" font-family="Courier New, monospace" font-size="14" opacity="0.6" class="lp-blink">1010</text>
+                    <text x="510" y="200" fill="#3b82f6" font-family="Courier New, monospace" font-size="14" opacity="0.6" class="lp-blink-delay">0101</text>
+                    <text x="80" y="340" fill="#8b5cf6" font-family="Courier New, monospace" font-size="14" opacity="0.6" class="lp-blink-delay">1101</text>
+                    <text x="500" y="410" fill="#2dd4bf" font-family="Courier New, monospace" font-size="14" opacity="0.6" class="lp-blink">0110</text>
+
+                    <!-- laptop base (keyboard, simple perspective trapezoid) -->
+                    <polygon points="235,318 425,318 460,352 200,352" fill="url(#baseGrad)" stroke="#2a3468" stroke-width="1.5"/>
+                    <polygon points="235,318 425,318 420,326 240,326" fill="#232c5c" opacity="0.6"/>
+
+                    <!-- laptop screen -->
+                    <rect x="220" y="150" width="220" height="168" rx="14" fill="url(#screenGrad)" stroke="#2a3468" stroke-width="2"/>
+                    <rect x="236" y="166" width="188" height="136" rx="8" fill="#0a0f24" stroke="#1c2450" stroke-width="1"/>
+                    <!-- faint dashboard grid on screen -->
+                    <g opacity="0.25" stroke="#2dd4bf" stroke-width="0.6">
+                        <line x1="236" y1="200" x2="424" y2="200"/>
+                        <line x1="236" y1="234" x2="424" y2="234"/>
+                        <line x1="236" y1="268" x2="424" y2="268"/>
+                        <line x1="288" y1="166" x2="288" y2="302"/>
+                        <line x1="372" y1="166" x2="372" y2="302"/>
+                    </g>
+
+                    <!-- glow halo behind padlock -->
+                    <circle cx="330" cy="234" r="58" fill="#2dd4bf" opacity="0.12" class="lp-pulse" filter="url(#glow)"/>
+
+                    <!-- padlock -->
+                    <g filter="url(#glow)">
+                        <path d="M308,220 v-18 a22,22 0 0 1 44,0 v18" fill="none" stroke="url(#lockGrad)" stroke-width="7" stroke-linecap="round"/>
+                        <rect x="296" y="216" width="68" height="56" rx="10" fill="#0d1330" stroke="url(#lockGrad)" stroke-width="4"/>
+                        <circle cx="330" cy="238" r="7" fill="url(#lockGrad)"/>
+                        <rect x="326" y="242" width="8" height="16" rx="3" fill="url(#lockGrad)"/>
+                    </g>
+
+                    <!-- shield with checkmark -->
+                    <g class="lp-float-slow" filter="url(#glow)">
+                        <path d="M150,220 l34,-14 34,14 v40 c0,26 -16,42 -34,50 c-18,-8 -34,-24 -34,-50 z"
+                              fill="url(#shieldGrad)" opacity="0.9"/>
+                        <path d="M168,252 l12,12 24,-26" fill="none" stroke="#06231f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+
+                    <!-- floating isometric cubes -->
+                    <g class="lp-float" transform="translate(70,90)">
+                        <polygon points="0,10 18,0 36,10 18,20" fill="url(#cubeTeal)"/>
+                        <polygon points="0,10 18,20 18,40 0,30" fill="#0d9488"/>
+                        <polygon points="36,10 18,20 18,40 36,30" fill="#14b8a6"/>
+                    </g>
+                    <g class="lp-float-delay" transform="translate(500,70)">
+                        <polygon points="0,10 16,0 32,10 16,20" fill="url(#cubeBlue)"/>
+                        <polygon points="0,10 16,20 16,36 0,27" fill="#1d4ed8"/>
+                        <polygon points="32,10 16,20 16,36 32,27" fill="#2563eb"/>
+                    </g>
+                    <g class="lp-float-slow" transform="translate(90,370)">
+                        <polygon points="0,8 14,0 28,8 14,16" fill="url(#cubePurple)"/>
+                        <polygon points="0,8 14,16 14,30 0,22" fill="#6d28d9"/>
+                        <polygon points="28,8 14,16 14,30 28,22" fill="#7c3aed"/>
+                    </g>
+                    <g class="lp-float" transform="translate(500,330)">
+                        <polygon points="0,10 18,0 36,10 18,20" fill="url(#cubeTeal)"/>
+                        <polygon points="0,10 18,20 18,40 0,30" fill="#0d9488"/>
+                        <polygon points="36,10 18,20 18,40 36,30" fill="#14b8a6"/>
+                    </g>
+
+                    <!-- small phone mock, bottom right -->
+                    <g class="lp-float-delay" transform="translate(430,360)">
+                        <rect x="0" y="0" width="86" height="140" rx="16" fill="#111a3d" stroke="#2a3468" stroke-width="2"/>
+                        <rect x="8" y="12" width="70" height="100" rx="4" fill="#0a0f24"/>
+                        <circle cx="43" cy="60" r="14" fill="none" stroke="url(#lockGrad)" stroke-width="3"/>
+                        <rect x="36" y="70" width="14" height="12" rx="2" fill="url(#lockGrad)"/>
+                    </g>
+
+                    <!-- small orbiting ring accents -->
+                    <circle cx="330" cy="234" r="90" fill="none" stroke="#2dd4bf" stroke-width="0.5" stroke-dasharray="2 6" opacity="0.4" class="lp-spin-slow"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="lp-section" id="features">
+    <div class="lp-container">
+        <div class="lp-section-head">
+            <h2>Built for Modern Forensic Investigations</h2>
+            <p>Every piece of evidence is hashed, timestamped, and immutably recorded — so tampering never goes unnoticed.</p>
+        </div>
+        <div class="lp-feature-grid" id="featureGrid">
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(45,212,191,0.12);">⛓️</div>
+                <h3>Blockchain-Secured Evidence</h3>
+                <p>Every evidence hash is permanently registered on-chain — immutable, timestamped, and independently verifiable.</p>
+            </div>
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(239,68,68,0.12);">🛡️</div>
+                <h3>Real-Time Tamper Detection</h3>
+                <p>Evidence is continuously re-hashed and compared against the original and on-chain record to catch any modification instantly.</p>
+            </div>
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(59,130,246,0.12);">🤝</div>
+                <h3>Multi-Investigator Collaboration</h3>
+                <p>Shared case access with a complete, attributable chain of custody as evidence moves between investigators.</p>
+            </div>
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(139,92,246,0.12);">🤖</div>
+                <h3>AI-Generated Reports</h3>
+                <p>Comprehensive forensic reports — executive summary, findings, and anomaly highlights — generated automatically.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="lp-section" id="how" style="padding-top:0;">
+    <div class="lp-container">
+        <div class="lp-section-head">
+            <h2>How It Works</h2>
+            <p>From collection to court-ready report in four verifiable steps.</p>
+        </div>
+        <div class="lp-feature-grid">
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(45,212,191,0.12);">1️⃣</div>
+                <h3>Collect Evidence</h3>
+                <p>Run disk, memory, network, and log forensics — automatically hashed with SHA-256 on collection.</p>
+            </div>
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(59,130,246,0.12);">2️⃣</div>
+                <h3>Register On-Chain</h3>
+                <p>The evidence hash is permanently written to the blockchain — no one can quietly alter it afterward.</p>
+            </div>
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(139,92,246,0.12);">3️⃣</div>
+                <h3>Track Custody</h3>
+                <p>Every access, analysis, or transfer is logged as an immutable custody event, attributed to the investigator who did it.</p>
+            </div>
+            <div class="lp-feature-card">
+                <div class="lp-feature-icon" style="background:rgba(217,119,6,0.12);">4️⃣</div>
+                <h3>Generate Report</h3>
+                <p>An AI-generated forensic report ties it all together — findings, anomalies, and full chain-of-custody verification.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="lp-section" style="padding-top:0;">
+    <div class="lp-container">
+        <div class="lp-cta-banner">
+            <h2>Ready to secure your next investigation?</h2>
+            <p>Create your investigator account — free, no setup required.</p>
+            <a href="{{ url_for('auth.register_page') }}" class="lp-btn lp-btn-primary">🚀 Create Free Account</a>
+        </div>
+    </div>
+</section>
+
+<footer class="lp-footer">
+    <div class="lp-container">
+        <p>© 2026 Cyber Forensic Tool — Blockchain-Integrated Evidence Management System</p>
+    </div>
+</footer>
+
+<script>
+// Reveal feature cards as they scroll into view
+const cards = document.querySelectorAll('.lp-feature-card');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('lp-in-view'), i * 80);
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.15 });
+cards.forEach(card => observer.observe(card));
+
+// Smooth scroll for nav anchor links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+</script>
+</body>
+</html>

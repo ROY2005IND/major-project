@@ -1,0 +1,9 @@
+Flask>=3.0
+flask-cors>=4.0
+flask-login>=0.6
+flask-sqlalchemy>=3.1
+python-dotenv>=1.0
+web3>=6.20
+eth-account>=0.11
+groq>=0.9
+psutil>=6.0

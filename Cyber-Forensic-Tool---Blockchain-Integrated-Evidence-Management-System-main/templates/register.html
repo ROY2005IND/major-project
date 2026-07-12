@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account - Cyber Forensic Tool</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modern-theme.css') }}">
+</head>
+<body>
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-logo">🛡️</div>
+        <div class="auth-title">Create investigator account</div>
+        <div class="auth-subtitle">Join the Forensic Investigation Platform</div>
+
+        <div class="auth-error" id="authError"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" autocomplete="name" required>
+            </div>
+            <div class="form-group">
+                <label for="organization">Organization</label>
+                <input type="text" id="organization" name="organization" placeholder="e.g. Forensic Lab, University Dept." autocomplete="organization">
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" autocomplete="username" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="new-password" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm</label>
+                    <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password" minlength="6" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary auth-submit" id="registerBtn">
+                Create Account
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="{{ url_for('auth.login_page') }}">Sign in</a>
+        </div>
+        <div class="auth-footer" style="margin-top:8px;">
+            <a href="{{ url_for('dashboard') }}">← Back to home</a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('registerBtn');
+    const errBox = document.getElementById('authError');
+    errBox.classList.remove('show');
+
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm_password').value;
+    if (password !== confirm) {
+        errBox.textContent = 'Passwords do not match';
+        errBox.classList.add('show');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin">⏳</span> Creating account...';
+
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                full_name: document.getElementById('full_name').value,
+                organization: document.getElementById('organization').value,
+                username: document.getElementById('username').value,
+                password: password,
+                confirm_password: confirm
+            })
+        });
+        const data = await res.json();
+
+        if (data.status === 'success') {
+            window.location.href = '/';
+        } else {
+            errBox.textContent = data.error || 'Registration failed';
+            errBox.classList.add('show');
+            btn.disabled = false;
+            btn.innerHTML = 'Create Account';
+        }
+    } catch (err) {
+        errBox.textContent = 'Could not reach the server. Please try again.';
+        errBox.classList.add('show');
+        btn.disabled = false;
+        btn.innerHTML = 'Create Account';
+    }
+});
+</script>
+</body>
+</html>
